@@ -238,18 +238,24 @@
                 
                 var nD = filterData(filters);
                 
-            // update the domain of the y-axis map to reflect change in frequencies.
+		// update the domain of the y-axis map to reflect change in frequencies.
                 scaley.domain([0,d3.max(nD, function(d){return d.upper})]);
                 
 		           //create y axis
-            var yAxis = d3.svg.axis()
+		var yAxis = d3.svg.axis()
                             .orient("left")
                             .scale(scaley)
                             .ticks(5)
                             .tickFormat(d3.format("%"));
 		
 		
-		yAxisGroup.call(yAxis);
+		// remove any previously drawn axis
+		svg.selectAll(".y.axis").remove();
+		 
+		// draw the new axis
+		svg.append("g").attr("class","y axis")
+			    .call(yAxis)
+			    .attr("transform", "translate(0,"+ bCDim.h +")");
                 
                 // Attach the new data to the bars.
                 var bars = svgContainer.selectAll(".rect").data(nD);
