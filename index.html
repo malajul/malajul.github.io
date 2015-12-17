@@ -241,6 +241,8 @@
             // update the domain of the y-axis map to reflect change in frequencies.
                 scaley.domain([0,d3.max(nD, function(d){return d.upper})]);
                 
+		yaxis.scale(scaley);
+		yAxisGroup.call(yAxis);
                 
                 // Attach the new data to the bars.
                 var bars = svgContainer.selectAll(".rect").data(nD);
