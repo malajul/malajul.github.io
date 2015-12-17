@@ -248,11 +248,7 @@
                 // transition the height and color of rectangles.
                 bars.select("rect").transition().duration(500)
                     .attr("y",function(d) {return scaley(d.upper)})
-                    //.attr("x", function(d) {return scalex(d.year) - (bCDim.w / xlength - 5)/2})
-                    //.attr("rx",(bCDim.w / xlength - 5)/3)
-                    //.attr("ry",(bCDim.w / xlength - 5)/3)
                     .attr("height",function(d) {return scaley(d.lower)-scaley(d.upper) })
-                    //.attr('width',bCDim.w / xlength - 5)
                     .style("fill", function(d) {return sexColor(d.sex)} );
                     
                 // Attach the new data to the circles.
@@ -260,16 +256,8 @@
                 
                 circles.select("circle").transition().duration(500)
                     .attr("cy",function(d) {return scaley(d.mean)})
-                    //.attr("cx", function(d) {return scalex(d.year)})
-                    .attr("r", 2)
-                    //.style("stroke","black")
-                    //.style("stroke-width",1)
                     .style("fill", function(d) {return sexColor(d.sex)} );
-                    
-                //console.log(circles);
-                
-                // transition the height and color of rectangles.
-                circles.select(".circle").transition().duration(500)
+
             }
             return bC;      
          };   
