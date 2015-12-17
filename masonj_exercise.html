@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Obesity Developer Exercise</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    
+    <style>
+        .axis {
+            font: 10px sans-serif;
+	}
+
+	.axis path,
+	.axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;          
+        }
+        
+        body{
+            width:800px;
+            margin:10px;
+                font-family: "AvenirNextLTW01-Regular",sans-serif;
+        }
+        
+        h3.drop{
+            font-weight: normal;
+        }
+        
+        .rect {
+            fill-opacity:0.5;
+            stroke-opacity:1;
+            stroke:black;
+            stroke-width:1;
+        }
+        
+        .rect:hover{
+            fill-opacity:1;
+        }
+        
+        .legend{
+            margin-bottom:76px;
+            display:inline-block;
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+        
+        #dashboard{
+            padding:10px;
+            margin:10px;
+        }
+  
+    </style>
+</head>
+
+<body>
+    <div id="dashboard">
+        <h1>Explore changing patterns in overweight and obesity prevalence by sex around the world</h1>
+        <h3 class="drop">Select a country or region
+        <select id="locDrop" onchange="filterFunc('loc')"></select>
+        </h3>
+        <h3 class="drop">Select an age group
+        <select id="ageDrop" onchange="filterFunc('age')"></select>
+        </h3>
+        <h3 class="drop">Select a metric
+        <select id="metDrop" onchange="filterFunc('metric')"></select>
+        </h3>
+        <h3 id="title"></h2>
+   </div>
+    
+<script>
+    //initialize variable to hold all unfiltered data
+    //var allData;
+    var bc;
+    
+    function sexColor(c){
+        return {male:"#94a967", female:"#f2ca51"}[c];
+    }
+    
+    //set default filters 
+    var filterChoices= {loc:'',age:'',metric:''};
+    
+    //create title for graph
+    function title(){
+        var cleanMetric;
+        if(filterChoices.metric == "obese"){
+            cleanMetric = "obesity";
+        } else {
+            cleanMetric = "overweight and obesity";
+            };
+        var title = "Prevalence of " + cleanMetric + " through time among the " + filterChoices.loc + " population aged " + filterChoices.age;
+        document.getElementById("title").innerHTML = title;
+    ;}
+    
+    
+    function filterFunc(type){
+        var sel;
+        if (type === "loc"){sel = "locDrop"}
+        else if (type === "age") {sel = "ageDrop"}
+        else {sel = "metDrop"};
+        var val = document.getElementById(sel).value;
+        filterChoices[type] = val;
+        bc.update(filterChoices);        
+    }
+        
+    
+    function dashboard(id,data){
+        
+        //function to filter data to selections and remove sex=both data values.
+        function filterData(filters){
+            var fData = data.filter(function(d) {return d.location_name ===filters.loc && d.age_group === filters.age && d.metric==filters.metric && d.sex !== "both"})
+            title();
+            return fData;
+        }
+        
+        
+        function barChart(fData){
+            var bC={}, bCDim = {t: 20, r: 20, b: 30, l: 40};
+            bCDim.w=600 - bCDim.l - bCDim.r,
+            bCDim.h=400 - bCDim.t - bCDim.b;
+            //create SVG viewpoint selection
+            var svgContainer = d3.select(id).append("svg")
+                            .attr("width", bCDim.w + bCDim.l + bCDim.r)
+                            .attr("height", bCDim.h + bCDim.t + bCDim.b).append("g")
+                            .attr("transform", "translate(" + bCDim.l + "," + bCDim.t +")");
+            
+            //create scale for y axis                        
+            var scaley = d3.scale.linear()
+                            .domain([0,d3.max(fData, function(d){return d.upper})])
+                            .range([bCDim.h,0]);
+            //create y axis
+            var yAxis = d3.svg.axis()
+                            .orient("left")
+                            .scale(scaley)
+                            .ticks(5)
+                            .tickFormat(d3.format("%"));
+                            
+    
+            
+            //create svg group element
+            var yAxisGroup = svgContainer.append("g")
+                            .attr("class","y axis")
+                            .call(yAxis);               
+                                           
+            //create scale for x axis                        
+            var scalex = d3.scale.linear()
+                            .domain([d3.min(fData, function(d){return d.year}),d3.max(fData, function(d){return d.year})])
+                            .range([20,bCDim.w]);
+                            
+            //create x axis
+            var xAxis = d3.svg.axis()
+                            .orient("bottom")
+                            .scale(scalex)
+                            .tickFormat(d3.format("d"));
+            
+            //create svg group element
+            var xAxisGroup = svgContainer.append("g")
+                            .attr("class","x axis")
+                            .attr("transform", "translate(0,"+ bCDim.h +")")
+                            .call(xAxis);
+                            
+            //create rectangles to represent confidence interval
+            var bars=svgContainer.selectAll(".rect").data(fData).enter()
+                            .append("g").attr("class","rect");
+                            
+            //calculate number of years to determine width of rectangles
+            var xlength = d3.max(fData, function(d){return d.year})-d3.min(fData, function(d){return d.year}) + 1;
+    
+            
+            bars.append("rect")
+                            .attr("y",function(d) {return scaley(d.upper)})
+                            .attr("x", function(d) {return scalex(d.year) - (bCDim.w / xlength - 5)/2})
+                            .attr("rx",(bCDim.w / xlength - 5)/3)
+                            .attr("ry",(bCDim.w / xlength - 5)/3)
+                            .attr("height",function(d) {return scaley(d.lower)-scaley(d.upper) })
+                            .attr('width',bCDim.w / xlength - 5)
+                            .style("fill", function(d) {return sexColor(d.sex)} );
+            
+            //create circles to represent mean prevalence
+            var circles = svgContainer.selectAll(".circle").data(fData).enter()
+                            .append("g").attr("class","circle");
+            circles.append("circle")
+                            .attr("cy",function(d) {return scaley(d.mean)})
+                            .attr("cx", function(d) {return scalex(d.year)})
+                            .attr("r", 2)
+                            .style("stroke","black")
+                            .style("stroke-width",1)
+                            .style("fill", function(d) {return sexColor(d.sex)} );
+                            
+            
+            //function to update bars after changing filters
+            bC.update= function(filters){
+                
+                var nD = filterData(filters);
+                
+            // update the domain of the y-axis map to reflect change in frequencies.
+                scaley.domain([0,d3.max(nD, function(d){return d.upper})]);
+                
+                
+                // Attach the new data to the bars.
+                var bars = svgContainer.selectAll(".rect").data(nD);
+                console.log(bars);
+                
+                // transition the height and color of rectangles.
+                bars.select("rect").transition().duration(500)
+                    .attr("y",function(d) {return scaley(d.upper)})
+                    //.attr("x", function(d) {return scalex(d.year) - (bCDim.w / xlength - 5)/2})
+                    //.attr("rx",(bCDim.w / xlength - 5)/3)
+                    //.attr("ry",(bCDim.w / xlength - 5)/3)
+                    .attr("height",function(d) {return scaley(d.lower)-scaley(d.upper) })
+                    //.attr('width',bCDim.w / xlength - 5)
+                    .style("fill", function(d) {return sexColor(d.sex)} );
+                    
+                // Attach the new data to the circles.
+                var circles = svgContainer.selectAll(".circle").data(nD)
+                
+                circles.select("circle").transition().duration(500)
+                    .attr("cy",function(d) {return scaley(d.mean)})
+                    //.attr("cx", function(d) {return scalex(d.year)})
+                    .attr("r", 2)
+                    //.style("stroke","black")
+                    //.style("stroke-width",1)
+                    .style("fill", function(d) {return sexColor(d.sex)} );
+                    
+                //console.log(circles);
+                
+                // transition the height and color of rectangles.
+                circles.select(".circle").transition().duration(500)
+            }
+            return bC;      
+         };   
+       
+        bc = barChart(filterData(filterChoices));
+    }
+    
+             
+    
+    //read data from csv and call function to create interactive graphic
+    d3.csv("data/ihmedata.CSV", obData = function(data) {
+    data.forEach(function(d) {
+        //set numerical values as numbers, convert prevalance to percent
+        d.year = +d.year;
+        d.mean = +d.mean;
+        d.lower = +d.lower;
+        d.upper = +d.upper;
+        d.age_end = +d.age_end;
+        d.age_start = +d.age_start;
+        d.sex_id = +d.sex_id;
+        d.location_id= +d.location_id;
+        d.age_group_id = +d.age_group_id;
+      });
+    
+    //populate dropdown menus from data
+    
+    //order location names by location_id number
+    var sorted=d3.map(data, function(d){return d.location_id;});
+    var ordered=[];
+    for (var i=0; i<sorted.values(0).length; i++){
+        ordered.push(sorted.values(0)[i].location_name);
+    }
+    filterChoices.loc=ordered[0];
+
+    d3.select("#locDrop").selectAll("option")
+        .data(ordered)
+        .enter()
+        .append("option")
+        .text(function(d){return d;})
+        .attr("value",function(d){return d;});
+    
+    //order age group by reverse age_group_id
+    sorted=d3.map(data, function(d){return d.age_group_id;});
+    ordered=[];
+    for (var i=sorted.values(0).length - 1; i>=0; i--){
+        ordered.push(sorted.values(0)[i].age_group);
+    }
+    filterChoices.age=ordered[0];
+        
+    d3.select("#ageDrop").selectAll("option")
+        .data(ordered)
+        .enter()
+        .append("option")
+        .text(function(d){return d;})
+        .attr("value",function(d){return d;});
+        
+    sorted=d3.map(data, function(d){return d.metric;});
+    ordered=d3.map(data, function(d){return d.metric;}).keys();
+    
+    filterChoices.metric=ordered[0];
+        
+    d3.select("#metDrop").selectAll("option")
+        .data(ordered)
+                .enter()
+        .append("option")
+        .text(function(d){return d;})
+        .attr("value",function(d){return d;});
+
+     //save data to global variable
+     //allData = data;
+     
+     //build dashboard
+     dashboard("#dashboard",data);
+     });
+</script>
+
+
+</body>
+</html>
