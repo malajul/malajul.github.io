@@ -241,7 +241,14 @@
             // update the domain of the y-axis map to reflect change in frequencies.
                 scaley.domain([0,d3.max(nD, function(d){return d.upper})]);
                 
-		yaxis.scale(scaley);
+		           //create y axis
+            var yAxis = d3.svg.axis()
+                            .orient("left")
+                            .scale(scaley)
+                            .ticks(5)
+                            .tickFormat(d3.format("%"));
+		
+		
 		yAxisGroup.call(yAxis);
                 
                 // Attach the new data to the bars.
