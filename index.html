@@ -58,7 +58,7 @@
 	div.tooltip {   
 	    position: absolute;           
 	    text-align: left;           
-	    width: 120px;                  
+	    width: 125px;                  
 	    height: 70px;                 
 	    padding: 5px;             
 	    font: 12px sans-serif;        
@@ -206,7 +206,7 @@
 				div.transition()        
 				    .duration(200)      
 				    .style("opacity", .9);      
-				div .html("<strong>" + d.sex + "s in " + d.year + "</strong><br/>Prevalance estimate<br/> Mean: " + d3.round(d.mean*100,1) + "% <br/>Lower bound: " + d3.round(d.lower*100,1) + "% <br/>Upper bound: " + d3.round(d.upper*100,1) + "%")  
+				div .html("<strong>Prevalance estimate<br/>" + d.sex + "s in " + d.year + "</strong><br/> Mean: " + d3.round(d.mean*100,1) + "% <br/>Lower bound: " + d3.round(d.lower*100,1) + "% <br/>Upper bound: " + d3.round(d.upper*100,1) + "%")  
 				    .style("left", (d3.event.pageX) + "px")     
 				    .style("top", (d3.event.pageY - 28) + "px");    
 				})                  
@@ -214,7 +214,7 @@
 				div.transition()        
 				    .duration(500)      
 				    .style("opacity", 0);   
-			    });;
+			    });
             
             //create circles to represent mean prevalence
             var circles = svgContainer.selectAll(".circle").data(fData).enter()
@@ -239,7 +239,6 @@
                 
                 // Attach the new data to the bars.
                 var bars = svgContainer.selectAll(".rect").data(nD);
-                console.log(bars);
                 
                 // transition the height and color of rectangles.
                 bars.select("rect").transition().duration(500)
@@ -249,7 +248,15 @@
                     //.attr("ry",(bCDim.w / xlength - 5)/3)
                     .attr("height",function(d) {return scaley(d.lower)-scaley(d.upper) })
                     //.attr('width',bCDim.w / xlength - 5)
-                    .style("fill", function(d) {return sexColor(d.sex)} );
+                    .style("fill", function(d) {return sexColor(d.sex)} )
+		    .on("mouseover", function(d) {      
+				div.transition()        
+				    .duration(200)      
+				    .style("opacity", .9);      
+				div .html("<strong>Prevalance estimate<br/>" + d.sex + "s in " + d.year + "</strong><br/> Mean: " + d3.round(d.mean*100,1) + "% <br/>Lower bound: " + d3.round(d.lower*100,1) + "% <br/>Upper bound: " + d3.round(d.upper*100,1) + "%")  
+				    .style("left", (d3.event.pageX) + "px")     
+				    .style("top", (d3.event.pageY - 28) + "px");    
+				}) ;
                     
                 // Attach the new data to the circles.
                 var circles = svgContainer.selectAll(".circle").data(nD)
