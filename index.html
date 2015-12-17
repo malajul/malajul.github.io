@@ -205,7 +205,7 @@
 				div.transition()        
 				    .duration(200)      
 				    .style("opacity", .9);      
-				div .html(<"<strong>d.sex + "s in " + d.year + "</strong><br/>Mean prevalance: " + d3.round(d.mean*100,1) + "% <br/>Lower bound: " + d3.round(d.lower*100,1) + "% <br/>Upper bound: " + d3.round(d.upper*100,1) + "%")  
+				div .html("<strong>" + d.sex + "s in " + d.year + "</strong><br/>Mean prevalance: " + d3.round(d.mean*100,1) + "% <br/>Lower bound: " + d3.round(d.lower*100,1) + "% <br/>Upper bound: " + d3.round(d.upper*100,1) + "%")  
 				    .style("left", (d3.event.pageX) + "px")     
 				    .style("top", (d3.event.pageY - 28) + "px");    
 				})                  
