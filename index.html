@@ -145,7 +145,7 @@
         
         
         function barChart(fData){
-            var bC={}, bCDim = {t: 20, r: 180, b: 30, l: 40};
+            var bC={}, bCDim = {t: 20, r: 10, b: 30, l: 40};
             bCDim.w=780 - bCDim.l - bCDim.r,
             bCDim.h=400 - bCDim.t - bCDim.b;
             //create SVG viewpoint selection
@@ -290,24 +290,8 @@
 	 
        
        
-       
-	function legend(){
-	    // create table for legend.
-	    var legend = d3.select("dashboard").append("table").attr('class',"legend");
-	    
-	    // create one row per segment.
-	    var tr = legend.append("tbody").selectAll("tr").data([('male','female')]).enter().append("tr");
-		
-	    // create the first column for each segment.
-	    tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
-		.attr("width", '16').attr("height", '16')
-			    .attr("fill",function(d){ return sexColor(d); });
-		
-	    // create the second column for each segment.
-	    tr.append("td").text(function(d){ return d;});
-	    }       
         bc = barChart(filterData(filterChoices));
-	legend();
+	
     }
     
              
