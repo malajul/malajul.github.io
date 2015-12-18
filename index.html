@@ -67,14 +67,6 @@
 	    border-radius: 8px;           
 	    pointer-events: none;         
 	}
-	
-	.legend{
-            margin-bottom:0px;
-            display:inline-block;
-            border-collapse: collapse;
-            border-spacing: 0px;
-	    width: 180px
-        }
   
     </style>
 </head>
@@ -89,8 +81,8 @@
         <select id="ageDrop" onchange="filterFunc('age')"></select>
         </p>
         <p class="drop">Select a metric
-        <select id="metDrop" onchange="filterFunc('metric')"></select></p>
-        <label><input type="checkbox" id = "show0" name="show0" value="show0" checked onclick ="handleClick(this)"></input>Check to include 0 on y-axis</label>
+        <select id="metDrop" onchange="filterFunc('metric')"></select>
+        <label><input type="checkbox" id = "show0" name="show0" value="show0" checked onclick ="handleClick(this)"></input>Check to include 0 on y-axis</label></p>
 	
         <h3 id="title"></h2>
    </div>
@@ -294,32 +286,11 @@
             return bC;      
          };
 	 
-	 function legend() {
-	    
-	    var legend = d3.select("dashboard").append("table")
-		.attr("class","legend");
-	    console.log(legend);
-	    var tr = legend.append("tbody").selectAll("tr").data([('male','female')])
-		.enter()
-		.append("tr");
-	    
-	    console.log(tr);
-	    
-	    tr.append("td").append("svg")
-		.attr("width", 20).attr("height",20)
-		.append("rect").attr("width", 20).attr("height",20)
-		.attr("fill",function(d){ return sexColor(d);});
-		
-	    tr.append("td").text(function(d){return d;});
-	    
-	    
-	 }
 	 
        
        
         bc = barChart(filterData(filterChoices));
 	
-	legend();
     }
     
              
