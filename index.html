@@ -65,23 +65,31 @@
 	    border-radius: 8px;           
 	    pointer-events: none;         
 	}
+	
+	#filters{
+	    width:450px;
+	}
+	#show0{
+	    text-align:right;
+	}
   
     </style>
 </head>
 
 <body>
     <div id="dashboard">
-        <h1>Explore changing patterns in overweight and obesity prevalence by sex around the world</h1>
-        <p class="drop">Select a country or region
-        <select id="locDrop" onchange="filterFunc('loc')"></select>
-        </p>
-        <p class="drop">Select an age group
-        <select id="ageDrop" onchange="filterFunc('age')"></select>
-        </p>
-        <p class="drop">Select a metric
-        <select id="metDrop" onchange="filterFunc('metric')"></select>
-        <label><input type="checkbox" id = "show0" name="show0" value="show0" checked onclick ="handleClick(this)"></input>Check to start y-axis at 0</label></p>
-	
+        <h1>Explore the relationships between overweight and obesity prevalence and sex, age, and geography</h1>
+	<div id="filters">
+	    <p class="drop">Select a country or region
+	    <select id="locDrop" onchange="filterFunc('loc')"></select>
+	    </p>
+	    <p class="drop">Select an age group
+	    <select id="ageDrop" onchange="filterFunc('age')"></select>
+	    </p>
+	    <p class="drop">Select a metric
+	    <select id="metDrop" onchange="filterFunc('metric')"></select>
+	    <label id="right"><input type="checkbox" id = "show0" name="show0" value="show0" checked onclick ="handleClick(this)"></input>Check to start y-axis at 0</label></p>
+	</div>
         <h3 id="title"></h2>
    </div>
     <div id="ack">
@@ -94,7 +102,7 @@
     //initialize variable to hold all unfiltered data
     //var allData;
     var bc;
-    var show0= true;
+    var show0= false;
     
     function sexColor(c){
         return {male:"#94a967", female:"#f2ca51"}[c];
