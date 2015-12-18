@@ -178,7 +178,7 @@
                                            
             //create scale for x axis                        
             var scalex = d3.scale.linear()
-                            .domain([d3.min(fData, function(d){return d.year}),d3.max(fData, function(d){return d.year})])
+                            .domain([0,d3.max(fData, function(d){return d.year})])
                             .range([20,bCDim.w]);
                             
             //create x axis
