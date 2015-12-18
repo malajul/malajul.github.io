@@ -298,12 +298,13 @@
 	    var sexList = [('male','female')];
 	    var legend = d3.select("dashboard").append("table").attr("class","legend");
 	    var tr = legend.append("tbody").selectAll("tr").data(sexList).enter().append("tr");
+	    console.log(tr);
 	    tr.append("td").append("svg").attr("width", 20).attr("height",20)
 		.append("rect").attr("width", 20).attr("height",20)
 		.attr("fill",function(d){ return sexColor(d);});
 		
 	    tr.append("td").text(function(d){return d;});
-	    console.log(tr);
+	    
 	    
 	 }
 	 
