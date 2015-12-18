@@ -81,8 +81,9 @@
         <select id="ageDrop" onchange="filterFunc('age')"></select>
         </p>
         <p class="drop">Select a metric
-        <select id="metDrop" onchange="filterFunc('metric')"></select>
-        </p>
+        <select id="metDrop" onchange="filterFunc('metric')"></select></p>
+        <p><input type="checkbox" name="show0" value="show0" checked onchange ="filterFunc('show0')">Include 0 on y-axis?</input></p>
+	
         <h3 id="title"></h2>
    </div>
     <div id="ack">
@@ -95,6 +96,7 @@
     //initialize variable to hold all unfiltered data
     //var allData;
     var bc;
+    var show0= "show0";
     
     function sexColor(c){
         return {male:"#94a967", female:"#f2ca51"}[c];
@@ -117,13 +119,16 @@
     
     
     function filterFunc(type){
-        var sel;
-        if (type === "loc"){sel = "locDrop"}
-        else if (type === "age") {sel = "ageDrop"}
-        else {sel = "metDrop"};
-        var val = document.getElementById(sel).value;
-        filterChoices[type] = val;
-        bc.update(filterChoices);        
+        if (type === "show0"){
+	    show0 = document.getElementById(sel).value;
+	} else {
+	    var sel;
+	    if (type === "loc"){sel = "locDrop"}
+	    else if (type === "age") {sel = "ageDrop"}
+	    else {sel = "metDrop"};
+	    var val = document.getElementById(sel).value;
+	    filterChoices[type] = val;}
+        bc.update(filterChoices, show0);        
     }
         
     
@@ -234,12 +239,17 @@
                             
             
             //function to update bars after changing filters
-            bC.update= function(filters){
+            bC.update= function(filters,show0){
                 
                 var nD = filterData(filters);
-                
+		if (show0 == 'show0'){
+		    var minDomain = 0;
+		} else {
+		    var minDomain = d3.min(nD, function(d){return d.lower});
+                }
+		
             // update the domain of the y-axis map to reflect change in frequencies.
-                scaley.domain([0,d3.max(nD, function(d){return d.upper})]);
+                scaley.domain([minDomain,d3.max(nD, function(d){return d.upper})]);
                 
 		           //create y axis
             var yAxis = d3.svg.axis()
