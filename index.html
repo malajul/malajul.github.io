@@ -67,10 +67,7 @@
 	}
 	
 	
-	#right{
-	    text-align:right;
-	}
-  
+
     </style>
 </head>
 
@@ -86,7 +83,7 @@
 	    </p>
 	    <p class="drop">Select a metric
 	    <select id="metDrop" onchange="filterFunc('metric')"></select>
-	    <label id="right"><input type="checkbox" id = "show0" name="show0" value="show0" checked onclick ="handleClick(this)"></input>Check to start y-axis at 0</label></p>
+	    <label><input type="checkbox" id = "show0" name="show0" value="show0" onclick ="handleClick(this)"></input>Check to start y-axis at 0</label></p>
 	</div>
         <h3 id="title"></h2>
    </div>
