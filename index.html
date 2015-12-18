@@ -160,7 +160,7 @@
             
             //create scale for y axis                        
             var scaley = d3.scale.linear()
-                            .domain([0,d3.max(fData, function(d){return d.upper})])
+                            .domain([d3.min(nD, function(d){return d.lower}),d3.max(fData, function(d){return d.upper})])
                             .range([bCDim.h,0]);
             //create y axis
             var yAxis = d3.svg.axis()
