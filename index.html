@@ -294,7 +294,7 @@
          };
 	 
 	 function legend() {
-	    var leg = {};
+	    
 	    var sexList = [('male','female')];
 	    var legend = d3.select("dashboard").append("table").attr("class","legend");
 	    var tr = legend.append("tbody").selectAll("tr").data(sexList).enter().append("tr");
@@ -303,13 +303,15 @@
 		.attr("fill",function(d){ return sexColor(d);});
 		
 	    tr.append("td").text(function(d){return d;});
-	    return leg;
+	    console.log(tr);
+	    
 	 }
 	 
        
        
         bc = barChart(filterData(filterChoices));
-	var leg = legend();
+	
+	legend();
     }
     
              
