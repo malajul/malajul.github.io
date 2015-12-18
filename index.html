@@ -296,11 +296,17 @@
 	 
 	 function legend() {
 	    
-	    var legend = d3.select("dashboard").append("table").attr("class","legend");
+	    var legend = d3.select("dashboard").append("table")
+		.attr("class","legend");
 	    console.log(legend);
-	    var tr = legend.append("tbody").selectAll("tr").data([('male','female')]).enter().append("tr");
+	    var tr = legend.append("tbody").selectAll("tr").data([('male','female')])
+		.enter()
+		.append("tr");
+	    
 	    console.log(tr);
-	    tr.append("td").append("svg").attr("width", 20).attr("height",20)
+	    
+	    tr.append("td").append("svg")
+		.attr("width", 20).attr("height",20)
 		.append("rect").attr("width", 20).attr("height",20)
 		.attr("fill",function(d){ return sexColor(d);});
 		
