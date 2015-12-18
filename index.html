@@ -69,10 +69,11 @@
 	}
 	
 	.legend{
-            margin-bottom:76px;
+            margin-bottom:0px;
             display:inline-block;
             border-collapse: collapse;
             border-spacing: 0px;
+	    width: 180px
         }
   
     </style>
@@ -160,7 +161,7 @@
                             .attr("height", bCDim.h + bCDim.t + bCDim.b).append("g")
                             .attr("transform", "translate(" + bCDim.l + "," + bCDim.t +")");
 			    
-    var div = d3.select("body").append("div")   
+    var div = d3.select("#dashboard").append("div")   
 	.attr("class", "tooltip")               
 	.style("opacity", 0);
             
@@ -295,10 +296,9 @@
 	 
 	 function legend() {
 	    
-	    var sexList = [('male','female')];
 	    var legend = d3.select("dashboard").append("table").attr("class","legend");
 	    console.log(legend);
-	    var tr = legend.append("tbody").selectAll("tr").data(sexList).enter().append("tr");
+	    var tr = legend.append("tbody").selectAll("tr").data([('male','female')]).enter().append("tr");
 	    console.log(tr);
 	    tr.append("td").append("svg").attr("width", 20).attr("height",20)
 		.append("rect").attr("width", 20).attr("height",20)
