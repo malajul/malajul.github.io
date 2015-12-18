@@ -77,12 +77,10 @@
 	<div id="filters">
 	    <p class="drop">Select a country or region
 	    <select id="locDrop" onchange="filterFunc('loc')"></select>
-	    </p>
+	    Select a metric
+	    <select id="metDrop" onchange="filterFunc('metric')"></select></p>
 	    <p class="drop">Select an age group
 	    <select id="ageDrop" onchange="filterFunc('age')"></select>
-	    </p>
-	    <p class="drop">Select a metric
-	    <select id="metDrop" onchange="filterFunc('metric')"></select>
 	    <label><input type="checkbox" id = "show0" name="show0" value="show0" onclick ="handleClick(this)"></input>Check to start y-axis at 0</label></p>
 	</div>
         <h3 id="title"></h2>
