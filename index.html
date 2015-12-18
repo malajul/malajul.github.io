@@ -82,7 +82,7 @@
         </p>
         <p class="drop">Select a metric
         <select id="metDrop" onchange="filterFunc('metric')"></select>
-        <label><input type="checkbox" id = "show0" name="show0" value="show0" checked onclick ="handleClick(this)"></input>Check to include 0 on y-axis</label></p>
+        <label><input type="checkbox" id = "show0" name="show0" value="show0" checked onclick ="handleClick(this)"></input>Check to start y-axis at 0</label></p>
 	
         <h3 id="title"></h2>
    </div>
@@ -113,7 +113,7 @@
         } else {
             cleanMetric = "overweight and obesity";
             };
-        var title = "Prevalence of " + cleanMetric + " through time among the " + filterChoices.loc + " population aged " + filterChoices.age;
+        var title = "Prevalence of " + cleanMetric + " through time among the " + filterChoices.loc + " population of males and females aged " + filterChoices.age;
         document.getElementById("title").innerHTML = title;
     ;}
     
