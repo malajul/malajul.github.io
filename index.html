@@ -297,6 +297,7 @@
 	    
 	    var sexList = [('male','female')];
 	    var legend = d3.select("dashboard").append("table").attr("class","legend");
+	    console.log(legend);
 	    var tr = legend.append("tbody").selectAll("tr").data(sexList).enter().append("tr");
 	    console.log(tr);
 	    tr.append("td").append("svg").attr("width", 20).attr("height",20)
