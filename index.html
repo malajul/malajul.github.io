@@ -237,7 +237,9 @@
                             .attr("r", 2)
                             .style("stroke","black")
                             .style("stroke-width",1)
-                            .style("fill", function(d) {return sexColor(d.sex)} );
+                            .style("fill", function(d) {return sexColor(d.sex)} )
+			    .on("mouseover", mouseover)                  
+			    .on("mouseout", mouseout);;
                             
             
             //function to update bars after changing filters
