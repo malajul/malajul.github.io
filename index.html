@@ -114,7 +114,7 @@
         } else {
             cleanMetric = "overweight and obesity";
             };
-        var title = "Prevalence of " + cleanMetric + " through time among the " + filterChoices.loc + " population of males and females aged " + filterChoices.age;
+        var title = "Prevalence of " + cleanMetric + " from 1990 to 2013 time among the " + filterChoices.loc + " population of males and females aged " + filterChoices.age;
         document.getElementById("title").innerHTML = title;
     ;}
     
@@ -145,8 +145,8 @@
         
         
         function barChart(fData){
-            var bC={}, bCDim = {t: 20, r: 20, b: 30, l: 40};
-            bCDim.w=600 - bCDim.l - bCDim.r,
+            var bC={}, bCDim = {t: 20, r: 180, b: 30, l: 40};
+            bCDim.w=780 - bCDim.l - bCDim.r,
             bCDim.h=400 - bCDim.t - bCDim.b;
             //create SVG viewpoint selection
             var svgContainer = d3.select(id).append("svg")
