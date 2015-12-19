@@ -137,9 +137,7 @@
         
         //function to filter data to selections and remove sex=both data values.
         function filterData(filters){
-            console.log(filters);
 	    var fData = data.filter(function(d) {return d.location_id ===filters.loc && d.age_group === filters.age && d.metric==filters.metric && d.sex !== "both"})
-	    console.log(fData[0]);
             title();
             return fData;
         }
@@ -307,7 +305,7 @@
             
         // create the second column for each segment.
         tr.append("td").text(function(d){ return "Prevalence among " + d +"s as percent - 95% Uncertainty Interval";});	 
-	 }
+	
 	 
 	 // create the third column for each segment.
         tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("circle")
