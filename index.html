@@ -86,7 +86,7 @@
         <h3 id="title"></h2>
    </div>
     <div id="ack">
-	<p>This visualization was created by <a href="mailto:julie.malakie@gmail.com">Julia Mason</a> as an exercise associated with the JavaScript Developer position advertised at the Institute for Health Metrics and Evaluation. Lat edited December 18, 2015.</p>
+	<p>This visualization was created by <a href="mailto:julie.malakie@gmail.com">Julia Mason</a> as an exercise associated with the JavaScript Developer position advertised at the Institute for Health Metrics and Evaluation. Last updated December 18, 2015.</p>
 	<p>Data source: 
 <blockquote>Global Burden of Disease Study 2013. Global Burden of Disease Study 2013 (GBD 2013) Obesity Prevalence 1990-2013. Seattle, United States: Institute for Health Metrics and Evaluation (IHME), 2014. Available: <a href="http://ghdx.healthdata.org/record/global-burden-disease-study-2013-gbd-2013-obesity-prevalence-1990-2013" target="_blank">http://ghdx.healthdata.org/record/global-burden-disease-study-2013-gbd-2013-obesity-prevalence-1990-2013</a></blockquote></p>
     </div>
@@ -96,6 +96,7 @@
     //var allData;
     var bc;
     var show0= false;
+    var locLookup;
     
     function sexColor(c){
         return {male:"#94a967", female:"#f2ca51"}[c];
@@ -113,6 +114,9 @@
             cleanMetric = "overweight and obesity";
             };
         var title = "Prevalence of " + cleanMetric + " from 1990 to 2013 time among the " + filterChoices.loc + " population of males and females aged " + filterChoices.age;
+	
+	console.log(filterChoices.loc);
+	
         document.getElementById("title").innerHTML = title;
     ;}
     
@@ -356,7 +360,8 @@
         ordered.push(([sorted.values(0)[i].location_id,sorted.values(0)[i].location_name]));
     }
     filterChoices.loc=ordered[0][0];
-
+    locLookup = ordered;
+    
     d3.select("#locDrop").selectAll("option")
         .data(ordered)
         .enter()
