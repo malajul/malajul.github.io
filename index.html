@@ -299,7 +299,7 @@
             
         // create the first column for each segment.
         tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
-            .attr("width", '24').attr("height", '24')
+            .attr("width", '24').attr("height", '24').attr('rx','8').attr('ry','8')
 	    .attr("fill",function(d){ return sexColor(d); })
 	    .attr("class","legFill");
             
@@ -308,9 +308,12 @@
 	
 	 
 	 // create the third column for each segment.
-        tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("circle")
+        tr.append("td").append("svg").attr("width", '5').attr("height", '5').append("circle")
             .attr("radius", '2')
+	    .style("stroke","black")
+	    .style("stroke-width",1)
 	    .attr("fill",function(d){ return sexColor(d); })
+	    .attr('text-align','center')
 	    .attr("class","legCirc");
             
         // create the second column for each segment.
