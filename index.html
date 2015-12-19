@@ -298,16 +298,6 @@
         var tr = legend.append("tbody").selectAll("tr").data((['female','male'])).enter().append("tr");
             
         // create the first column for each segment.
-        tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("rect")
-            .attr("width", '24').attr("height", '24').attr('rx','8').attr('ry','8')
-	    .attr("fill",function(d){ return sexColor(d); })
-	    .attr("class","legFill");
-            
-        // create the second column for each segment.
-        tr.append("td").text(function(d){ return "Prevalence among " + d +"s as percent - 95% Uncertainty Interval";});	 
-	
-	 
-	 // create the third column for each segment.
         tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("circle")
             .attr("r", '2').attr("cx",'15').attr("cy",'15')
 	    .style("stroke","black")
@@ -319,6 +309,18 @@
         // create the second column for each segment.
         tr.append("td").text(function(d){ return "Prevalence among " + d +"s as percent";});	 
 	 }
+	 
+	 // create the third column for each segment.
+        tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("rect")
+            .attr("width", '24').attr("height", '24').attr('rx','8').attr('ry','8')
+	    .attr("fill",function(d){ return sexColor(d); })
+	    .attr("class","legFill");
+            
+        // create the fourth column for each segment.
+        tr.append("td").text(function(d){ return "Prevalence among " + d +"s as percent - 95% Uncertainty Interval";});	 
+	
+	 
+	 
 	 
 	 
        
