@@ -309,7 +309,7 @@
 	 
 	 // create the third column for each segment.
         tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("circle")
-            .attr("r", '5')
+            .attr("r", '5').attr("cx",'15').attr("cy",'15')
 	    .style("stroke","black")
 	    .style("stroke-width",1)
 	    .attr("fill",function(d){ return sexColor(d); })
