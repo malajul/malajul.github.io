@@ -113,7 +113,8 @@
         } else {
             cleanMetric = "overweight and obesity";
             };
-	var locName = locLookup.filter(function(d) {return d[0] === 1})[0][1];
+	
+	var locName = locLookup.filter(function(d) {return d[0] === filterChoices.loc})[0][1];
         var title = "Prevalence of " + cleanMetric + " from 1990 to 2013 time among the " + locName + " population of males and females aged " + filterChoices.age;
 	
         document.getElementById("title").innerHTML = title;
