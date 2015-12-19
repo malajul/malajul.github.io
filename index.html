@@ -116,8 +116,6 @@
 	var locName = locLookup.filter(function(d) {return d[0] === 1})[0][1];
         var title = "Prevalence of " + cleanMetric + " from 1990 to 2013 time among the " + locName + " population of males and females aged " + filterChoices.age;
 	
-	console.log(filterChoices.loc);
-	
         document.getElementById("title").innerHTML = title;
     ;}
     
@@ -324,6 +322,7 @@
         // create the fourth column for each segment.
         tr.append("td").text(function(d){ return "Prevalence as percent: " + d +"s  - 95% Uncertainty Interval";});
 	 
+	 return leg;
 	 }
 	
 	 
