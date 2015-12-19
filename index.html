@@ -317,7 +317,7 @@
     var sorted=d3.map(data, function(d){return d.location_id;});
     var ordered=[];
     for (var i=0; i<sorted.values(0).length; i++){
-        ordered.push([sorted.values(0)[i].location_id,sorted.values(0)[i].location_name]);
+        ordered.push(([sorted.values(0)[i].location_id,sorted.values(0)[i].location_name]));
     }
     filterChoices.loc=ordered[0][0];
     console.log(ordered);
