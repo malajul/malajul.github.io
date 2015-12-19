@@ -136,7 +136,7 @@
         
         //function to filter data to selections and remove sex=both data values.
         function filterData(filters){
-            var fData = data.filter(function(d) {return d.location_name ===filters.loc && d.age_group === filters.age && d.metric==filters.metric && d.sex !== "both"})
+            var fData = data.filter(function(d) {return d.location_id ===filters.loc && d.age_group === filters.age && d.metric==filters.metric && d.sex !== "both"})
             title();
             return fData;
         }
@@ -317,7 +317,7 @@
     var sorted=d3.map(data, function(d){return d.location_id;});
     var ordered=[];
     for (var i=0; i<sorted.values(0).length; i++){
-        ordered.push(sorted.values(0)[i].location_name);
+        ordered.push([(sorted.values(0)[i].location_id,sorted.values(0)[i].location_name)]);
     }
     filterChoices.loc=ordered[0];
 
@@ -325,8 +325,8 @@
         .data(ordered)
         .enter()
         .append("option")
-        .text(function(d){return d;})
-        .attr("value",function(d){return d;});
+        .text(function(d){return d[1];})
+        .attr("value",function(d){return d[0];});
     
     //order age group by reverse age_group_id
     sorted=d3.map(data, function(d){return d.age_group_id;});
