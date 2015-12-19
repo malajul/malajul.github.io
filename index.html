@@ -298,7 +298,7 @@
         var tr = legend.append("tbody").selectAll("tr").data((['female','male'])).enter().append("tr");
             
         // create the first column for each segment.
-        tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
+        tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("rect")
             .attr("width", '24').attr("height", '24').attr('rx','8').attr('ry','8')
 	    .attr("fill",function(d){ return sexColor(d); })
 	    .attr("class","legFill");
@@ -308,7 +308,7 @@
 	
 	 
 	 // create the third column for each segment.
-        tr.append("td").append("svg").attr("width", '5').attr("height", '5').append("circle")
+        tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("circle")
             .attr("r", '2')
 	    .style("stroke","black")
 	    .style("stroke-width",1)
