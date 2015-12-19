@@ -74,7 +74,7 @@
 	}
 	
 	.D0, .D1, .R1, .R2, .R3, .R4, .R5, .R6, .R7, .R8, .R9, .R10, .R11, .R12, .R13, .R14, .R15, .R16, .R17, .R18, .R19, .R20, .R21 > option {
-	    padding-left:15px;
+	    padding-left:30px;
 	    text-align:left;
 	}
 
@@ -124,7 +124,7 @@
             cleanMetric = "overweight and obesity";
             };
 	
-	var locName = locLookup.filter(function(d) {return d[1] === filterChoices.loc})[0][1];
+	var locName = locLookup.filter(function(d) {return d[1] === filterChoices.loc})[0][0];
         var title = "Prevalence of " + cleanMetric + " from 1990 to 2013 time among the " + locName + " population of males and females aged " + filterChoices.age;
 	
         document.getElementById("title").innerHTML = title;
