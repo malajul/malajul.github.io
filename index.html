@@ -136,7 +136,9 @@
         
         //function to filter data to selections and remove sex=both data values.
         function filterData(filters){
-            var fData = data.filter(function(d) {return d.location_id ===filters.loc && d.age_group === filters.age && d.metric==filters.metric && d.sex !== "both"})
+            console.log(filters);
+	    var fData = data.filter(function(d) {return d.location_id ===filters.loc && d.age_group === filters.age && d.metric==filters.metric && d.sex !== "both"})
+	    console.log(fData[0]);
             title();
             return fData;
         }
@@ -320,7 +322,6 @@
         ordered.push(([sorted.values(0)[i].location_id,sorted.values(0)[i].location_name]));
     }
     filterChoices.loc=ordered[0][0];
-    console.log(ordered);
 
     d3.select("#locDrop").selectAll("option")
         .data(ordered)
