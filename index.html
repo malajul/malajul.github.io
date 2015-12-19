@@ -27,12 +27,16 @@
             font-weight: normal;
         }
         
-        .rect {
+        .rect, .legFill {
             fill-opacity:0.5;
             stroke-opacity:1;
             stroke:black;
             stroke-width:1;
         }
+	
+	.legFill{
+	    border-radius: 8px;
+	}
         
         .rect:hover{
             fill-opacity:1;
@@ -297,12 +301,13 @@
         var legend = d3.select(id).append("table").attr('class','legend');
         
         // create one row per segment.
-        var tr = legend.append("tbody").selectAll("tr").data((['male','female'])).enter().append("tr");
+        var tr = legend.append("tbody").selectAll("tr").data((['female','male'])).enter().append("tr");
             
         // create the first column for each segment.
         tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
-            .attr("width", '16').attr("height", '16')
-			.attr("fill",function(d){ return sexColor(d); });
+            .attr("width", '24').attr("height", '24')
+	    .attr("fill",function(d){ return sexColor(d); })
+	    .attr("class","legFill");
             
         // create the second column for each segment.
         tr.append("td").text(function(d){ return "Prevalence among " + d +"s as Percent - 95% Uncertainty Interval";});	 
