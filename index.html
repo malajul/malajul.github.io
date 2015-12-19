@@ -320,6 +320,7 @@
         ordered.push([(sorted.values(0)[i].location_id,sorted.values(0)[i].location_name)]);
     }
     filterChoices.loc=ordered[0];
+    console.log(ordered);
 
     d3.select("#locDrop").selectAll("option")
         .data(ordered)
