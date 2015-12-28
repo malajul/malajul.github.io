@@ -1,10 +1,10 @@
 <!DOCTYPE html>
+    <meta charset="utf-8">
 
 <html>
 <head>
     <title>JavaScript Developer Exercise</title>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    
+    <script type = "text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
     <style>
         .axis {
             font: 10px sans-serif;
@@ -22,10 +22,7 @@
             margin:10px;
                 font-family: "AvenirNextLTW01-Regular",sans-serif;
         }
-        
-        h3.drop{
-            font-weight: normal;
-        }
+
         
         .rect, .legFill {
             fill-opacity:0.5;
@@ -65,124 +62,142 @@
 	    border-radius: 8px;           
 	    pointer-events: none;         
 	}
-	#locDrop  {
-	    text-align:right;
+	.small  {
+	    padding-left:60px;
 	}
-	.G, .S1, .S2, .S3, .S4, .S5, .S6, .S7 > option{
-	    padding-left:0px;
-	    text-align:left;
+	.large{
+	    padding-left:5px;
+	    
 	}
 	
-	.D0, .D1, .R1, .R2, .R3, .R4, .R5, .R6, .R7, .R8, .R9, .R10, .R11, .R12, .R13, .R14, .R15, .R16, .R17, .R18, .R19, .R20, .R21 > option {
+	.medium {
 	    padding-left:30px;
-	    text-align:left;
+	   
 	}
+	
+				
+		
+
 
     </style>
 </head>
 
 <body>
     <div id="dashboard">
-        <h1>Explore the relationships between overweight and obesity prevalence and sex, age, and geography</h1>
-	<div id="filters">
-	    <p class="drop">Select a country or region
-	    <select id="locDrop" onchange="filterFunc('loc')"></select>
-	    Select a metric
+        <h1>Look for relationships between overweight and obesity prevalence and sex, age, and geography</h1>
+	<p>Select a country or region
+	<select id="locDrop" onchange="filterFunc('loc')"></select>
+	   <span> Select a metric</span>
 	    <select id="metDrop" onchange="filterFunc('metric')"></select></p>
 	    <p class="drop">Select an age group
 	    <select id="ageDrop" onchange="filterFunc('age')"></select>
 	    <label><input type="checkbox" id = "show0" name="show0" value="show0" onclick ="handleClick(this)"></input>Check to start y-axis at 0</label></p>
-	</div>
-        <h3 id="title"></h2>
+	            <div><h3 id="title"></h3>
    </div>
+	</div>
+
     <div id="ack">
-	<p>This visualization was created by <a href="mailto:julie.malakie@gmail.com">Julia Mason</a> as an exercise associated with the JavaScript Developer position advertised at the Institute for Health Metrics and Evaluation. Last updated December 18, 2015.</p>
+	<p>This visualization was created by <a href="mailto:julie.malakie@gmail.com">Julia Mason</a> as an exercise associated with the JavaScript Developer position advertised at the Institute for Health Metrics and Evaluation. Last updated December 28, 2015.</p>
 	<p>Data source: 
 <blockquote>Global Burden of Disease Study 2013. Global Burden of Disease Study 2013 (GBD 2013) Obesity Prevalence 1990-2013. Seattle, United States: Institute for Health Metrics and Evaluation (IHME), 2014. Available: <a href="http://ghdx.healthdata.org/record/global-burden-disease-study-2013-gbd-2013-obesity-prevalence-1990-2013" target="_blank">http://ghdx.healthdata.org/record/global-burden-disease-study-2013-gbd-2013-obesity-prevalence-1990-2013</a></blockquote></p>
     </div>
     
 <script>
-    //initialize variable to hold all unfiltered data
-    //var allData;
+    //initialize variable to hold barchart and update closure
     var bc;
+    //initialize boolean variable for showing 0 on y axis
     var show0= false;
+    //initialize variable to store lookup table from location code to location name
     var locLookup;
-    
-    function sexColor(c){
-        return {male:"#94a967", female:"#f2ca51"}[c];
-    }
-    
-    //set default filters 
+    //initialize variable to store data filters 
     var filterChoices= {loc:'',age:'',metric:''};
     
-    //create title for graph
-    function title(){
-        var cleanMetric;
-        if(filterChoices.metric == "obese"){
-            cleanMetric = "obesity";
-        } else {
-            cleanMetric = "overweight and obesity";
-            };
-	
-	var locName = locLookup.filter(function(d) {return d[1] === filterChoices.loc})[0][0];
-        var title = "Prevalence of " + cleanMetric + " from 1990 to 2013 time among the " + locName + " population of males and females aged " + filterChoices.age;
-	
-        document.getElementById("title").innerHTML = title;
-    ;}
     
     function handleClick(cb){
+	//function to show or hide 0 on y axis after clicking input box
 	show0 = cb.checked;
+	//update bar chart with new y axis
 	bc.update(filterChoices, show0); 
     }
     
     function filterFunc(type){
+	//filter data and update bar chart after dropdown menus change
 	    var sel;
 	    if (type === "loc"){sel = "locDrop"}
 	    else if (type === "age") {sel = "ageDrop"}
 	    else {sel = "metDrop"};
+	    //get new value from the dropdown that changed and store in filterChoices variable
 	    var val = document.getElementById(sel).value;
 	    filterChoices[type] = val;
-	
+
+	//update barchart
         bc.update(filterChoices, show0);        
     }
         
     
     function dashboard(id,data){
+	
+	
         
-        //function to filter data to selections and remove sex=both data values.
+	function title(){
+	    //create title for graph, incorporating info from data filters
+	    var cleanMetric;
+	    if(filterChoices.metric == "obese"){
+		cleanMetric = "obesity";
+	    } else {
+		cleanMetric = "overweight and obesity";
+		};
+	    
+	    var locName = locLookup[filterChoices.loc];
+	    var title = "Prevalence of " + cleanMetric + " from 1990 to 2013 time among the " + locName + " population aged " + filterChoices.age;
+	    
+	    document.getElementById("title").innerHTML = title;
+	;}
+	
+	function sexColor(c){
+	//function to assign color based on sex
+	    return {male:"#94a967", female:"#f2ca51"}[c];
+	}
+	
+        
         function filterData(filters){
-	    var fData = data.filter(function(d) {return d.location ===filters.loc && d.age_group === filters.age && d.metric==filters.metric && d.sex !== "both"})
-            title();
+	    //function to filter data and update title based on selections made by user
+	    var fData = data.filter(function(d) {return d.location ===filters.loc && d.age_group === filters.age && d.metric==filters.metric;})
+            //update title
+	    title();
             return fData;
         }
         
         
         function barChart(fData){
+	    //build the barchart and update closure
+	    
             var bC={}, bCDim = {t: 20, r: 50, b: 30, l: 40};
             bCDim.w=780 - bCDim.l - bCDim.r,
             bCDim.h=400 - bCDim.t - bCDim.b;
-            //create SVG viewpoint selection
+            
+	    //create SVG viewpoint selection
             var svgContainer = d3.select(id).append("svg")
                             .attr("width", bCDim.w + bCDim.l + bCDim.r)
                             .attr("height", bCDim.h + bCDim.t + bCDim.b).append("g")
                             .attr("transform", "translate(" + bCDim.l + "," + bCDim.t +")");
 			    
-    var div = d3.select("#dashboard").append("div")   
-	.attr("class", "tooltip")               
-	.style("opacity", 0);
-            
-            //create scale for y axis                        
+	    //initialize tooltip for mouseover
+	    var div = d3.select("#dashboard").append("div")   
+		.attr("class", "tooltip")               
+		.style("opacity", 0);
+		    
+            //create scale for y axis, defaults to no 0 on y axis                        
             var scaley = d3.scale.linear()
                             .domain([d3.min(fData, function(d){return d.lower}),d3.max(fData, function(d){return d.upper})])
                             .range([bCDim.h,0]);
-            //create y axis
+            
+	    //create y axis
             var yAxis = d3.svg.axis()
                             .orient("left")
                             .scale(scaley)
                             .ticks(5)
                             .tickFormat(d3.format("%"));
-                            
-    
             
             //create svg group element
             var yAxisGroup = svgContainer.append("g")
@@ -206,14 +221,14 @@
                             .attr("transform", "translate(0,"+ bCDim.h +")")
                             .call(xAxis);
                             
-            //create rectangles to represent confidence interval
+            //create rectangles to represent 95% confidence interval
             var bars=svgContainer.selectAll(".rect").data(fData).enter()
                             .append("g").attr("class","rect");
                             
             //calculate number of years to determine width of rectangles
             var xlength = d3.max(fData, function(d){return d.year})-d3.min(fData, function(d){return d.year}) + 1;
     
-            
+	    //place rectangles based on data
             bars.append("rect")
                             .attr("y",function(d) {return scaley(d.upper)})
                             .attr("x", function(d) {return scalex(d.year) - (bCDim.w / xlength - 5)/2})
@@ -225,23 +240,25 @@
 			    .on("mouseover", mouseover)                  
 			    .on("mouseout", mouseout);
 			    
-	    function mouseover(d){	    
+	    function mouseover(d){
+		//show tooltip on mouseover
 		div.transition()        
 		    .duration(200)      
 		    .style("opacity", .9);      
-		div .html("<strong>Prevalance estimate<br/> among " + d.sex + "s in " + d.year + "</strong><br/>" + d3.round(d.mean*100,1) + "%  (" + d3.round(d.lower*100,1) + "% - " + d3.round(d.upper*100,1) + "%)")  
+		div .html("<strong>Prevalance estimate<br/>" + d.sex + "s in " + d.year + "</strong><br/>" + d3.round(d.mean*100,1) + "%  (" + d3.round(d.lower*100,1) + "% - " + d3.round(d.upper*100,1) + "%)")  
 		    .style("left", (d3.event.pageX) + "px")     
 		    .style("top", (d3.event.pageY - 28) + "px");        
 	    }
 	    
 	    function mouseout(d){
+		//remove tooltip on mouseout
 		 div.transition()        
 		     .duration(500)      
 		     .style("opacity", 0);   
 	     
 	    }
             
-            //create circles to represent mean prevalence
+            //create circles to represent mean estimate of prevalence and add to chart
             var circles = svgContainer.selectAll(".circle").data(fData).enter()
                             .append("g").attr("class","circle");
             circles.append("circle")
@@ -257,30 +274,31 @@
             
             //function to update bars after changing filters
             bC.update= function(filters,show0){
-                
+                //get filtered data based on updated filter choices
                 var nD = filterData(filters);
+		
+		//determine lower bound on y axis domain based on user choice to include 0 or not
 		if (show0 == true){
 		    var minDomain = 0;
 		} else {
 		    var minDomain = d3.min(nD, function(d){return d.lower});
                 }
 		
-            // update the domain of the y-axis map to reflect change in frequencies.
-                scaley.domain([minDomain,d3.max(nD, function(d){return d.upper})]);
-                
-		           //create y axis
-            var yAxis = d3.svg.axis()
-                            .orient("left")
-                            .scale(scaley)
-                            .ticks(5)
-                            .tickFormat(d3.format("%"));
-		
-		
-	    // remove any previously drawn axis
-	    svgContainer.selectAll(".y.axis").remove();
-	     
-	    // draw the new axis
-	    svgContainer.append("g").attr("class","y axis").call(yAxis);
+		// update the domain of the y-axis map to reflect change in prevalence and selected lower bound.
+		    scaley.domain([minDomain,d3.max(nD, function(d){return d.upper})]);
+		    
+		//create y axis
+		var yAxis = d3.svg.axis()
+				.orient("left")
+				.scale(scaley)
+				.ticks(5)
+				.tickFormat(d3.format("%"));
+		    
+		// remove any previously drawn axis
+		svgContainer.selectAll(".y.axis").remove();
+		 
+		// draw the new axis
+		svgContainer.append("g").attr("class","y axis").call(yAxis);
                 
                 // Attach the new data to the bars.
                 var bars = svgContainer.selectAll(".rect").data(nD);
@@ -294,52 +312,55 @@
                 // Attach the new data to the circles.
                 var circles = svgContainer.selectAll(".circle").data(nD)
                 
+		//transition the placement of the circles
                 circles.select("circle").transition().duration(500)
                     .attr("cy",function(d) {return scaley(d.mean)})
                     .style("fill", function(d) {return sexColor(d.sex)} );
 
             }
+	    //return variable for access to bc.update closure
             return bC;      
          };
 	 
 	 function legend(){
+	    //add legend below chart
 	    var leg = {};
             
-        // create table for legend.
-        var legend = d3.select(id).append("table").attr('class','legend');
-        
-        // create one row per segment.
-        var tr = legend.append("tbody").selectAll("tr").data((['female','male'])).enter().append("tr");
-            
-        // create the first column for each segment.
-        tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("circle")
-            .attr("r", '2').attr("cx",'15').attr("cy",'15')
-	    .style("stroke","black")
-	    .style("stroke-width",1)
-	    .attr("fill",function(d){ return sexColor(d); })
-	    .attr('text-align','center')
-	    .attr("class","legCirc");
-            
-        // create the second column for each segment.
-        tr.append("td").text(function(d){ return "Prevalence as percent: " + d +"s" ;});	 
-	 
-	 
-	 // create the third column for each segment.
-        tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("rect")
-            .attr("width", '24').attr("height", '24').attr('rx','8').attr('ry','8')
-	    .attr("fill",function(d){ return sexColor(d); })
-	    .attr("class","legFill");
-            
-        // create the fourth column for each segment.
-        tr.append("td").text(function(d){ return "Prevalence as percent: " + d +"s  - 95% Uncertainty Interval";});
-	 
-	 return leg;
+	    // create table for legend.
+	    var legend = d3.select(id).append("table").attr('class','legend');
+	    
+	    // create one row per sex ('both' data has been removed already).
+	    var tr = legend.append("tbody").selectAll("tr").data((['female','male'])).enter().append("tr");
+		
+	    // create the first column, small circle to represent mean estimate.
+	    tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("circle")
+		.attr("r", '2').attr("cx",'15').attr("cy",'15')
+		.style("stroke","black")
+		.style("stroke-width",1)
+		.attr("fill",function(d){ return sexColor(d); })
+		.attr('text-align','center')
+		.attr("class","legCirc");
+		
+	    // create the second column - mean label.
+	    tr.append("td").text(function(d){ return "Prevalence as percent: " + d +"s" ;});	 
+	     
+	     
+	     // create the third column - rounded rectangle for confidence interval.
+	    tr.append("td").append("svg").attr("width", '30').attr("height", '30').append("rect")
+		.attr("width", '24').attr("height", '24').attr('rx','8').attr('ry','8')
+		.attr("fill",function(d){ return sexColor(d); })
+		.attr("class","legFill");
+		
+	    // create the fourth column -confidence interval label.
+	    tr.append("td").text(function(d){ return "Prevalence as percent: " + d +"s  - 95% Uncertainty Interval";});
+	     
+	     return leg;
 	 }
 	
 	 
 	 
 	 
-	 
+	 //add bar chart and legend to page
        
         bc = barChart(filterData(filterChoices));
 	var leg = legend();
@@ -347,10 +368,10 @@
     
              
     
-    //read data from csv and call function to create interactive graphic
+    //read data from csv and call dashboard function to create interactive graphic
     d3.csv("data/ihmedata.CSV", obData = function(data) {
     data.forEach(function(d) {
-        //set numerical values as numbers, convert prevalance to percent
+        //set numerical values as numbers
         d.year = +d.year;
         d.mean = +d.mean;
         d.lower = +d.lower;
@@ -362,45 +383,80 @@
         d.age_group_id = +d.age_group_id;
       });
     
+     //remove data where sex === both, since not used in the visualization
+     data = data.filter(function(d){return d.sex !== "both"})
+    
     //populate dropdown menus from data
     
-    //order location names by location_id number
+    //order location names by location_id number and add to dropdown with code as value and geographic level as class
+    
+    //get unique location id codes
+   
     var sorted=d3.map(data, function(d){return d.location_id;});
-    var ordered=[];
+    locLookup ={};
+    var ordered =[];
     for (var i=0; i<sorted.values(0).length; i++){
-        ordered.push(([sorted.values(0)[i].location_name,sorted.values(0)[i].location]));
+        	locLookup[sorted.values(0)[i].location] = sorted.values(0)[i].location_name;
+		ordered.push(([sorted.values(0)[i].location_name,sorted.values(0)[i].location]));
     }
     filterChoices.loc=ordered[0][1];
-    locLookup = ordered;
     
+    
+    function locCat(loc){
+	//assign geographic level to location 
+	var large = ['G', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
+	var reg = ['D0', 'D1', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8', 'R9', 'R10', 'R11', 'R12', 'R13', 'R14', 'R15', 'R16', 'R17', 'R18', 'R19', 'R20', 'R21'];
+	if (large.findIndex(function (d) {return d === loc}) >=0){
+	    return "large";
+	    } else if (reg.findIndex(function(d) {return d === loc}) >= 0) {return "medium";
+	    } else {
+		return "small";
+	}
+    }
+    
+    function ageCat(age){
+	//assign level to age category based on whether or not 'standardized' age category
+	if (age.slice(-12)==="standardized"){return "large";}
+	else {return "medium";}
+    }
+    
+    //populate loc drop down menu with all identified options
     d3.select("#locDrop").selectAll("option")
         .data(ordered)
         .enter()
         .append("option")
         .text(function(d){return d[0];})
         .attr("value",function(d){return d[1];})
-	.attr("class",function(d){return d[1];});
+	.attr("class",function(d){return locCat(d[1]);});
     
-    //order age group by reverse age_group_id
+    //order age group groups chronologically with 'standardized' age groups as broader categories
     sorted=d3.map(data, function(d){return d.age_group_id;});
+    
     ordered=[];
-    for (var i=sorted.values(0).length - 1; i>=0; i--){
-        ordered.push(sorted.values(0)[i].age_group);
+    for (var i=0; i< sorted.values(0).length; i++){
+        ordered.push([sorted.values(0)[i].age_group, sorted.values(0)[i].age_start, sorted.values(0)[i].age_end]);
     }
-    filterChoices.age=ordered[0];
-        
+    
+    ordered.sort(function(a,b){if(a[1]==b[1]){return d3.descending(a[2],b[2])} return d3.ascending(a[1], b[1]);})
+ 
+    filterChoices.age=ordered[0][0];
+     
+    //populate age drop down menu with all identified options    
     d3.select("#ageDrop").selectAll("option")
         .data(ordered)
         .enter()
         .append("option")
-        .text(function(d){return d;})
-        .attr("value",function(d){return d;});
+        .text(function(d){return d[0];})
+        .attr("value",function(d){return d[0];})
+	.attr("class",function(d){return ageCat(d[0]);});
         
-    sorted=d3.map(data, function(d){return d.metric;});
+   
+    //add to metrics dropdown
     ordered=d3.map(data, function(d){return d.metric;}).keys();
     
     filterChoices.metric=ordered[0];
-        
+    
+    //populate metric drop down with all identified options    
     d3.select("#metDrop").selectAll("option")
         .data(ordered)
                 .enter()
@@ -408,8 +464,6 @@
         .text(function(d){return d;})
         .attr("value",function(d){return d;});
 
-     //save data to global variable
-     //allData = data;
      
      //build dashboard
      dashboard("#dashboard",data);
